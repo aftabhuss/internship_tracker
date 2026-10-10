@@ -1,30 +1,32 @@
-# Tech Job Market Tracker 📊
+# Tech Job Market Tracker & AI Analyzer 📊🤖
 
-An automated data pipeline and interactive dashboard designed to track, scrape, and analyze current tech job market demands, focusing on Data Science, AI, and Software Engineering roles.
+A fully integrated ETL web application that scrapes live job market data, cleans unstructured text, and leverages Large Language Models (LLMs) to dynamically extract in-demand skills for tech roles (Data Science, AI, and Software Engineering).
 
-## The Problem
-Standard job search advice relies on outdated assumptions about what skills and seniorities are currently in demand. To optimize my internship applications, I built this tool to scrape live job market data, clean the unstructured text, and visually analyze which companies are hiring and what experience levels they expect.
+## The Business Problem
+Standard job search advice relies on outdated assumptions. To optimize applications and understand real-time market demands, I engineered this tool to scrape live job boards, structure the messy data, and visually analyze which companies are actively hiring, the required seniority levels, and the specific tech stacks being requested.
 
 ## Architecture & Tech Stack
-This project follows a professional ETL (Extract, Transform, Load) architecture:
-*   **Extraction Layer (Playwright & BeautifulSoup):** Bypasses complex background APIs (like LinkedIn's GraphQL/SDUI payloads) by using headless browser automation to render JavaScript and scrape raw HTML directly from the DOM.
-*   **Transformation Layer (Pandas):** Cleans messy location data, standardizes job titles, categorizes roles (e.g., Data Analytics, Software Engineering), and extracts seniority levels using Regex and string matching.
-*   **Presentation Layer (Streamlit & Plotly):** A responsive web dashboard that visualizes hiring trends and seniority distributions dynamically.
-*   **Development Workflow:** Built leveraging AI-assisted development tools (Cursor/Emergent) to rapidly prototype the extraction pipeline and UI components.
+This project follows a professional ETL (Extract, Transform, Load) architecture, wrapped in a modern web UI:
+*   **Extraction Layer (Playwright):** Bypasses complex background APIs (like LinkedIn's GraphQL/SDUI payloads) using headless browser automation to render JavaScript and scrape raw DOM elements dynamically.
+*   **Transformation Layer (Pandas + Groq LLM):** 
+    *   *Structural Cleaning:* Uses Pandas and Regex to deduplicate records, standardize locations, and categorize seniority.
+    *   *Semantic Enrichment:* Integrates the Groq API (`llama3-8b-8192`) via strict JSON-mode prompting to dynamically read job titles and extract core technical skills (e.g., Python, React, Cloud).
+*   **Presentation Layer (Streamlit & Plotly):** A responsive, dark-mode compatible web dashboard featuring interactive metric cards and charts.
 
 ## Project Structure
 ```text
 internship_tracker/
 │
 ├── data/
-│   ├── raw/                 # Unprocessed HTML/CSV data
-│   └── processed/           # Cleaned Pandas DataFrames
+│   ├── raw/                 # Unprocessed Playwright CSV outputs
+│   └── processed/           # Cleaned & AI-enriched Pandas DataFrames
 │
 ├── src/
-│   ├── scraper.py           # Playwright automation & CLI interface
-│   ├── cleaner.py           # Pandas text cleaning & feature engineering
-│   └── dashboard.py         # Streamlit UI & Plotly visualizations
+│   ├── scraper.py           # Headless browser automation module
+│   ├── cleaner.py           # Pandas cleaning & Groq JSON-mode skill extraction
+│   └── dashboard.py         # Main Streamlit web application
 │
+├── .env                     # Local secrets (API keys)
 ├── .gitignore
 ├── requirements.txt
 └── README.md
